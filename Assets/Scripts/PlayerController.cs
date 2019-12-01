@@ -7,8 +7,7 @@ public class PlayerController : MonoBehaviour
     public float speed;
     private float verticalInput;
     public Rigidbody2D rb;
-    public LayerMask groundLayer;
-    public BoxCollider2D bx;
+    
     // Start is called before the first frame update
     void Start()
     {
