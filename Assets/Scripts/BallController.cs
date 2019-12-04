@@ -8,15 +8,22 @@ public class BallController : MonoBehaviour
     public float xvect, yvect;
     public float initSpeed ; 
     public Rigidbody2D rb;
-    private Transform ballInitPos;
+    private Vector3 ballInitPos, leftPaddleInitPos, rightPaddleInitPos, leftBoundPos, rightBoundPos;
+    public Transform ballPos, leftPaddlePos, rightPaddlePos;
     // Start is called before the first frame update
+    public Text leftTxt, rightTxt;
+
+    public int leftScore, rightScore;
     void Start()
-    {
-        ballInitPos = rb.transform;
+    {   
+        ballInitPos = ballPos.transform.position;
+        leftPaddleInitPos = leftPaddlePos.transform.position;
+        rightPaddleInitPos = rightPaddlePos.transform.position;
         leftOrRight = Random.Range(0 , 2);
         ballRandomizer();
-        ballDirection();
-
+        Invoke("ballDirection", 3);
+        leftScore = 0;
+        rightScore = 0;
     }
     void ballRandomizer()
     {
@@ -41,19 +48,46 @@ public class BallController : MonoBehaviour
          rb.velocity = new Vector2(xvect * initSpeed, yvect * initSpeed);
     
     }
-    /*
+    
     void Update()
     {
-        if ball hits left border, point goes to right player
-            left player gets to start, so leftOrRight = 1
-            rightPoint++
-        if ball hits right border, point goes to left player
-            so leftOrRight = 0
-            leftpoint++
+        if(ballPos.position.x < -83.43)
+        {
+            resetPosition();
+            rightScore++;
+            rightTxt.text = "" + rightScore;
+            //resetPosition();
+            leftOrRight = 1;
+            rb.velocity = new Vector2(0,0);
+            ballRandomizer();
+            Invoke("ballDirection", 3);
+
+        }
+
+        else if(ballPos.position.x > 63.32)
+        {
+            resetPosition();
+            leftScore++;
+            leftTxt.text =  "" + leftScore;
+            //resetPosition();
+            leftOrRight = 0;
+            rb.velocity = new Vector2(0,0);
+            ballRandomizer();
+            Invoke("ballDirection", 3);
+            
+        }
+        else
+        {
+
+        } 
+        rightTxt.text = "" + rightScore;
+        leftTxt.text =  "" + leftScore;
+    
+    
+    }
 
 
-
-        for ball to increase in speed and change direction when hitting a paddle
+   /*     for ball to increase in speed and change direction when hitting a paddle
 
         on trigger
         rb.velocity = new Vector (0,0)
@@ -63,9 +97,16 @@ public class BallController : MonoBehaviour
         speed = absolute(ydelta) + initSpeed
         yvect = ydelta/20
         xvect = Mathf.Sqrt(1 / (yvect * yvect));
-    }
+        */
+    
 
-    */
+    void resetPosition()
+    {
+    rightPaddlePos.transform.position = rightPaddleInitPos;
+    leftPaddlePos.transform.position = leftPaddleInitPos;
+    ballPos.transform.position = ballInitPos;
+
+    }
        
 }
 
